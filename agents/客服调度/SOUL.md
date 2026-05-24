@@ -30,14 +30,14 @@
 
 1. **分析消息**：判断 category + urgency
 2. **高紧急度 / 投诉类** → 直接转人工：
-   - `sessions_spawn(collector, "提取关键信息")`
+   - `sessions_spawn(信息采集, "提取关键信息")`
    - `sessions_yield`
-   - `sessions_spawn(editor, "生成工单摘要")`
+   - `sessions_spawn(工单处理, "生成工单摘要")`
    - `sessions_yield`
 3. **其他** → 自动处理：
-   - `sessions_spawn(collector, "提取信息 + 检索知识库")`
+   - `sessions_spawn(信息采集, "提取信息 + 检索知识库")`
    - `sessions_yield`
-   - `sessions_spawn(editor, "生成回复")`
+   - `sessions_spawn(工单处理, "生成回复")`
    - `sessions_yield`
 4. 汇总结果，回复用户
 

@@ -8,10 +8,10 @@
     },
     "list": [
       {
-        "id": "router",
-        "name": "路由调度员",
+        "id": "客服调度",
+        "name": "客服调度员",
         "default": true,
-        "workspace": "${OPENCLAW_WORKSPACE}/agents/router/workspace",
+        "workspace": "${OPENCLAW_WORKSPACE}/agents/客服调度/workspace",
         "model": {
           "primary": "deepseek/deepseek-v4-flash"
         },
@@ -28,9 +28,9 @@
         }
       },
       {
-        "id": "collector",
+        "id": "信息采集",
         "name": "信息采集员",
-        "workspace": "${OPENCLAW_WORKSPACE}/agents/collector/workspace",
+        "workspace": "${OPENCLAW_WORKSPACE}/agents/信息采集/workspace",
         "model": {
           "primary": "deepseek/deepseek-v4-flash"
         },
@@ -45,9 +45,9 @@
         }
       },
       {
-        "id": "editor",
+        "id": "工单处理",
         "name": "工单处理员",
-        "workspace": "${OPENCLAW_WORKSPACE}/agents/editor/workspace",
+        "workspace": "${OPENCLAW_WORKSPACE}/agents/工单处理/workspace",
         "model": {
           "primary": "deepseek/deepseek-v4-flash"
         },
@@ -80,12 +80,12 @@
     },
     "agentToAgent": {
       "enabled": true,
-      "allow": ["router", "collector", "editor"]
+      "allow": ["客服调度", "信息采集", "工单处理"]
     }
   },
   "bindings": [
     {
-      "agentId": "router",
+      "agentId": "客服调度",
       "match": {
         "channel": "clickclack",
         "accountId": "default"
