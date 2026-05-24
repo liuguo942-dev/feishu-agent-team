@@ -1,0 +1,59 @@
+# 智能客服工单系统
+
+基于 OpenClaw 多 Agent 框架搭建的智能客服系统，支持意图分类、知识库检索自动回复、工单流转。
+
+## 架构
+
+```
+用户消息 → Router(意图分类+调度) → Collector(信息提取+知识库检索) → Editor(自动回复/工单生成)
+```
+
+### 3 个 Agent
+
+| Agent | 角色 | 职责 |
+|-------|------|------|
+| Router | 客服总调度 | 意图分类(technical/account/order/complaint/consult)、紧急度判断、分发调度 |
+| Collector | 信息采集员 | 提取用户结构化信息、检索本地知识库 |
+| Editor | 工单处理员 | 知识库匹配时自动回复、无匹配时生成工单转人工 |
+
+## 核心流程
+
+1. **意图分类**：Router 分析用户消息，判断类别和紧急度
+2. **知识库检索**：Collector 读取本地 KnowledgeBase，查找匹配的解决方案
+3. **智能回复**：知识库有答案 → Editor 直接回复；无答案 → 生成工单转人工
+
+## 项目结构
+
+```
+├── README.md
+├── openclaw.json          # OpenClaw 配置（需替换 API Key）
+├── KnowledgeBase/         # 本地知识库
+│   ├── 常见问题.md        # 账号/订单/产品 FAQ
+│   ├── 技术故障排查.md    # 错误码/页面故障/上传问题
+│   └── 退款政策.md        # 退款规则和流程
+└── agents/                # Agent 角色定义
+    ├── router/SOUL.md
+    ├── collector/
+    │   ├── SOUL.md
+    │   └── TOOLS.md
+    └── editor/SOUL.md
+```
+
+## 使用方式
+
+1. 安装 OpenClaw：`npm install -g openclaw`
+2. 启动 Gateway：`openclaw gateway`
+3. 将本项目文件放入 `~/.openclaw/` 目录
+4. 在 OpenClaw 中发送消息测试
+
+## 测试用例
+
+```
+# 知识库可回答
+"怎么重置密码？"              → 直接给出重置步骤
+"网站报 502 错误"            → 给出排查方案
+"我要退款，订单号 XXX"       → 告知退款政策
+
+# 需转人工
+"你们这产品太差了，投诉"     → 生成投诉工单
+```

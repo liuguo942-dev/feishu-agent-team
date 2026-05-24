@@ -1,0 +1,127 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "${OPENCLAW_WORKSPACE}/workspace",
+      "model": {
+        "primary": "deepseek/deepseek-v4-flash"
+      }
+    },
+    "list": [
+      {
+        "id": "router",
+        "name": "路由调度员",
+        "default": true,
+        "workspace": "${OPENCLAW_WORKSPACE}/agents/router/workspace",
+        "model": {
+          "primary": "deepseek/deepseek-v4-flash"
+        },
+        "tools": {
+          "profile": "coding",
+          "allow": [
+            "sessions_spawn",
+            "sessions_send",
+            "sessions_list",
+            "sessions_history",
+            "sessions_yield",
+            "read"
+          ]
+        }
+      },
+      {
+        "id": "collector",
+        "name": "信息采集员",
+        "workspace": "${OPENCLAW_WORKSPACE}/agents/collector/workspace",
+        "model": {
+          "primary": "deepseek/deepseek-v4-flash"
+        },
+        "tools": {
+          "profile": "coding",
+          "allow": [
+            "web_search",
+            "bash",
+            "read",
+            "write"
+          ]
+        }
+      },
+      {
+        "id": "editor",
+        "name": "工单处理员",
+        "workspace": "${OPENCLAW_WORKSPACE}/agents/editor/workspace",
+        "model": {
+          "primary": "deepseek/deepseek-v4-flash"
+        },
+        "tools": {
+          "profile": "coding",
+          "allow": [
+            "read",
+            "write"
+          ]
+        }
+      }
+    ]
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "<YOUR_GATEWAY_TOKEN>"
+    },
+    "port": 18789,
+    "bind": "loopback"
+  },
+  "tools": {
+    "profile": "coding",
+    "web": {
+      "search": {
+        "provider": "duckduckgo",
+        "enabled": true
+      }
+    },
+    "agentToAgent": {
+      "enabled": true,
+      "allow": ["router", "collector", "editor"]
+    }
+  },
+  "bindings": [
+    {
+      "agentId": "router",
+      "match": {
+        "channel": "clickclack",
+        "accountId": "default"
+      }
+    }
+  ],
+  "models": {
+    "providers": {
+      "deepseek": {
+        "baseUrl": "https://api.deepseek.com",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "deepseek-v4-flash",
+            "name": "DeepSeek V4 Flash",
+            "reasoning": true,
+            "input": ["text"],
+            "contextWindow": 1000000,
+            "maxTokens": 384000,
+            "api": "openai-completions"
+          }
+        ]
+      }
+    }
+  },
+  "auth": {
+    "profiles": {
+      "deepseek:default": {
+        "provider": "deepseek",
+        "mode": "api_key"
+      }
+    }
+  },
+  "channels": {
+    "clickclack": {
+      "enabled": true
+    }
+  }
+}
