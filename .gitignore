@@ -1,0 +1,4 @@
+node_modules/
+rag-cache.json
+.env
+.DS_Store
